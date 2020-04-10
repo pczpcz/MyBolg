@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+	<p>kkkkkkkkkk,body</p>
+{% endblock %}
+
+
+{% import 'macro.html' as macro %}
+
+{% if usr_info %}
+	macro.render_commet(usr_info)
+{% else %}
+	<p>hahhahah</p>
+{% endif %}
+
+
+<h1>welcome {{name}}!, this is my first blog</h1>
+<ul>
+	<p>your personal informal is listed as follow:</p>
+	macro.render_comment(usr_info)
+</ul>
