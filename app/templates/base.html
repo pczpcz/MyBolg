@@ -1,0 +1,28 @@
+{%  extends "bootstrap/base.html" %}
+
+{% block head %}
+	{% block title %}
+		{% if current_user.is_authenticated %}
+			<h1>hello, {{current_user.name}}!</h1>
+			<a href="{{url_for('main.index')}}">home</a>
+			<a href="{{url_for('auth.logout')}}">Log Out</a>
+			<a href="{{url_for('auth.user_info', username=current_user.name)}}">My Profile</a>
+			{% if current_user.is_adminstrator() %}
+				<a href="{{url_for('main.moderate')}}">Moderate</a>
+			{% endif %}
+		{% else %}
+			<h1>hello, stranger!</h1>
+			<a href="{{url_for('main.index')}}">home</a>
+			<a href="{{url_for('auth.login')}}">Log In</a>
+			<a href="{{url_for('auth.register')}}">Register</a>
+		{% endif %}
+	{% endblock %}
+{% endblock %}
+
+{% block body %}
+	{% block scripts %}
+		{{super()}}
+		{{moment.include_moment()}}
+		{{pagedown.include_pagedown()}}
+	{% endblock %}
+{% endblock %}

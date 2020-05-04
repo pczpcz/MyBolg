@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macropaginate.html" as macro %}
+
+{% block body %} 
+	{{super()}}
+
+	<h1>{{show_fellowed}}</h1>
+	{% if current_user.has_perm(write_perm) %}
+		{{wtf.quick_form(form)}}
+	{% endif %}
+	
+	<hr>
+	<a href="{{url_for('main.all')}}">ALL</a>  <a href="{{url_for('main.show_fellowed')}}">FELLOWED</a>
+	<hr>
+	{% for post in posts %}
+	<div>
+		{% if post.author %}
+		<img src="{{post.author.gravatar(size=10)}}">
+		{% endif %}
+
+		<a href="{{url_for('auth.user_info', username=post.author.name)}}">{{post.author.name}}</a> 
+		<p>{{post.subject}}, post at {{moment(post.post_time).format('L')}}
+		<a href="{{url_for('main.post', id=post.id)}}">read</a>		
+		<a href="{{url_for('main.edit_post', id=post.id)}}">edit post</a>
+		<a href="{{url_for('main.post', id=post.id)}}">comment</a></p>
+		{% if post.content_html %}
+			<p>{{post.content_html | safe}}</p>
+		{% else %}
+			<p>{{post.content | safe}}</p>
+		{% endif %}
+
+	</div>
+	{% endfor %}
+
+	<div>
+	{{macro.macro_paginate(pagination, 'main.index')}}
+	</div>
+{% endblock %}

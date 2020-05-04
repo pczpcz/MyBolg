@@ -1,0 +1,9 @@
+Dear {{user.name}},
+
+to confirm your account, please click the following link as quickly as you can:
+
+{{url_for('auth.confirm', token=token, _external=True)}}
+
+from xxxx. to resend confirmation mail to click resend
+
+

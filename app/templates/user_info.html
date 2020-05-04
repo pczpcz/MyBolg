@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block body %}
+	<div><img src="{{user.gravatar()}}"></div>
+	<div>
+		{{super()}}
+		<p><strong>Username:</strong> {{user.name}}</p>
+		<p><strong>Location:</strong> {{user.location}}</p>
+		<p><strong>Account was created at:</strong> {{moment(user.account_createtime).format('LLL')}}</p>
+		<p><strong>Last time login:</strong> {{moment(user.login_lasttime).fromNow()}}</p>
+		<p><strong>About me:</strong> {{user.about_me}}</p>
+
+		{% if user.role.name == 'Admin' or user.role.name == 'Moderator' %}
+		<a href="{{url_for('auth.adminedit')}}">Edit Profile</a>
+		{% else %}
+		<a href="{{url_for('auth.useredit')}}">Edit Profile</a>
+		{% endif %}
+		
+		{% if current_user.isfellowing(user) %}
+			<a href="{{url_for('main.unfollow', username=user.name)}}">unfollow</a>
+		{% else %}
+			<a href="{{url_for('main.follow', username=user.name)}}">Follow</a>
+		{% endif %}		
+		<a href="{{url_for('main.fellowed_list', username=user.name)}}">Following:{{user.fellowed.count()}}</a>
+		<a href="{{url_for('main.fellower_list', username=user.name)}}">Followed:{{user.fellower.count()}}</a>
+	</div>
+
+	<hr>
+	{% for post in posts %}
+	<div>
+		<img src="{{post.author.gravatar(size=10)}}">
+		<a href="{{url_for('auth.user_info', username=post.author.name)}}">{{post.author.name}}</a> 
+		<p>{{post.subject}}, post at {{moment(post.post_time).format('L')}}		
+		<a href="{{url_for('main.post', id=post.id)}}">read</a>
+		<a href="{{url_for('main.edit_post', id=post.id)}}">edit post</a>
+		<a href="{{url_for('main.post', id=post.id)}}">comment</a></p>
+		{% if post.content_html %}
+			<p>{{post.content_html | safe}}</p>
+		{% else %}
+			<p>{{post.content | safe}}</p>
+		{% endif %}
+	</div>
+	{% endfor %}
+{% endblock %}		<a href="{{url_for('main.edit_post', id=post.id)}}">edit post</a></p>

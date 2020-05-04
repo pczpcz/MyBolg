@@ -1,0 +1,33 @@
+{% macro macro_paginate(pagination, endpoint) %}
+
+<ul>
+<li style="list-style:none; display:block; float:left; padding:10px 30px">
+{% if pagination.has_prev %}
+	<a href="{{url_for(endpoint, page=pagination.prev_num, **kwargs)}}">
+{% else %}
+	<a href="#">
+{% endif %} &laquo </a>
+</li>
+
+
+{% for page in pagination.iter_pages(3,1,1,3) %}
+	<li style="list-style:none; display:block; float:left; padding:10px 30px">
+	{% if page %}
+		<a href="{{url_for(endpoint, page=page, **kwargs)}}">{{page}}</a>
+	{% else %}	
+		<a href="#">&hellip;</a>
+	{% endif %}
+	</li>
+{% endfor %}
+
+<li style="list-style:none; display:block; float:left; padding:10px 30px">
+{% if pagination.has_next %}
+	<a href="{{url_for(endpoint, page=pagination.next_num, **kwargs)}}">
+{% else %}
+	<a href="#">
+{% endif %} &raquo </a>
+</li>
+</ul>
+
+{% endmacro %}
+

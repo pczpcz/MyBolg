@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block body %}
+	<div>
+		{{super()}}
+	</div>
+
+	<hr>	
+	<div>
+		<img src="{{post.author.gravatar(size=10)}}">
+		<a href="{{url_for('auth.user_info', username=post.author.name)}}">{{post.author.name}}</a> 
+		<p>{{post.subject}}, post at {{moment(post.post_time).format('LLL')}}
+		<a href="{{url_for('main.post', id=post.id)}}"#comments>comments:&nbsp;{{post.comments.count()}}</a></p>
+		{% if post.content_html %}
+			<p>{{post.content_html | safe}}</p>
+		{% else %}
+			<p>{{post.content | safe}}</p>
+		{% endif %}
+	</div>
+	<hr>
+	<div>
+		{{wtf.quick_form(form)}}
+	</div>
+	<hr>
+	<div>
+		<h1 id="comments">Comments</h1>
+		{% for comment in comments %}
+			<img src="{{current_user.gravatar(size=10)}}">
+			<a href="{{url_for('auth.user_info', username=current_user.name)}}">{{current_user.name}}</a>
+			<p>comment at {{moment(comment.comment_time).format('LLL')}}
+			{% if comment.content_html %}
+				<p>{{comment.content_html | safe}}</p>
+			{% else %}
+				<p>{{comment.content | safe}}</p>
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endblock %}

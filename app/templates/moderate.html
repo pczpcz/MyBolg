@@ -1,0 +1,36 @@
+{% extends 'base.html'%}
+{% import "_macropaginate.html" as macro %}
+
+
+{% block body %}
+	{{super()}}
+	<hr>
+	<div>
+		<h2> All Comments:</h2>
+		{% for comment in comments %}
+			<img src="{{comment.author.gravatar(size=10)}}">
+			<a href="{{url_for('auth.user_info', username=comment.author.name)}}">{{comment.author.name}}</a>
+			<p>comment at {{moment(comment.comment_time).format('LLL')}}
+
+			{% if comment.disable %}
+				<a href="{{url_for('main.comment_enable', id=comment.id, page=page)}}">enable</a>
+			{% else %}
+				<a href="{{url_for('main.comment_disable', id=comment.id, page=page)}}">disable</a>
+			{% endif %}
+			
+			{% if comment.disable %}			
+				<p>your comment is forbidden!</p>
+			{% else %}
+				{% if comment.content_html %}
+					<p>{{comment.content_html | safe}}</p>
+				{% else %}
+					<p>{{comment.content | safe}}</p>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+	</div>
+
+	<div>
+	{{macro.macro_paginate(pagination, 'main.moderate')}}
+	</div>
+{% endblock %}

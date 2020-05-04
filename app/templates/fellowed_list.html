@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block body %}
+	<p> <strong>follower name &nbsp;&nbsp;&nbsp;&nbsp;follower email</strong></p>
+{% for f in fellowed %}
+	<p>{{f.fellowed.name}}&nbsp;&nbsp;&nbsp;&nbsp;{{f.fellowed.email}}</p>
+{% endfor %}
+{% endblock %}

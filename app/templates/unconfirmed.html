@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<p>you are not confirmed, please check your email!</p>
+
+<p>to resend confirmation mail, click <a href="{{url_for('auth.resend_confirmation')}}">resend</a></p>
+
+{% endblock %}
